@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق حروف الجر التفاعلي</title>
+    <!-- Chosen Palette: Calm Neutrals -->
+    <!-- Application Structure Plan: A tab-based SPA with two main sections: 'Learn' and 'Practice'. The 'Learn' section provides foundational knowledge from the report. The 'Practice' section contains five distinct, interactive activity types (fill-in-the-blank, translation, matching, sentence building, analysis) presented one question at a time with immediate feedback to maximize engagement and learning reinforcement. This structure separates instruction from application, a proven pedagogical model, and prevents users from being overwhelmed by a long, static page of exercises. -->
+    <!-- Visualization & Content Choices: Report Info: Preposition definitions -> Goal: Inform -> Presentation: Styled text and HTML table. Interaction: None. Justification: Clear, direct presentation for foundational concepts. | Report Info: Practice questions -> Goal: Apply/Recall/Analyze -> Presentation: Interactive quizzes (buttons, text input, clickable words). Interaction: User input with immediate validation and scoring. Justification: Active learning is more effective than passive reading of questions and answers. All interactions are built with Vanilla JS. -> Library/Method: Vanilla JS, Tailwind CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans Arabic', sans-serif; background-color: #FDFCF9; }
+        .tab-active { background-color: #4A5568; color: #FFFFFF; }
+        .tab-inactive { background-color: #E2E8F0; color: #2D3748; }
+        .activity-card { transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .activity-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .feedback-correct { border-color: #48BB78; background-color: #F0FFF4; }
+        .feedback-incorrect { border-color: #F56565; background-color: #FFF5F5; }
+        .match-item-selected { background-color: #63B3ED; color: white; }
+        .match-item-correct { background-color: #68D391; color: white; pointer-events: none; }
+        .match-item-incorrect { animation: shake 0.5s; background-color: #FC8181; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div id="app" class="container mx-auto p-4 md:p-8 max-w-5xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-700">حروف الجر في اللغة العربية</h1>
+            <p class="text-lg text-gray-500 mt-2">درس تفاعلي لمساعدتك على إتقان حروف الجر</p>
+        </header>
+
+        <nav class="flex justify-center mb-8 rounded-lg shadow-md p-1 bg-gray-200">
+            <button data-tab="learn" class="tab-button tab-active w-1/2 py-3 px-4 rounded-md font-bold transition-colors duration-300">الدرس</button>
+            <button data-tab="practice" class="tab-button tab-inactive w-1/2 py-3 px-4 rounded-md font-bold transition-colors duration-300">التمرين</button>
+        </nav>
+
+        <main>
+            <section id="learn" class="tab-content bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                <h2 class="text-3xl font-bold mb-4 text-gray-700 border-b-2 border-gray-200 pb-2">مقدمة في حروف الجر</h2>
+                <p class="mb-6 text-lg leading-relaxed">
+                    حروف الجر (huruuf al-jarr) هي كلمات تربط بين أجزاء الجملة لتوضيح العلاقات مثل المكان، والزمان، والاتجاه. القاعدة الأهم هي أن الاسم الذي يأتي بعد حرف الجر يكون في حالة الجر (مجرور)، وعلامته غالبًا ما تكون الكسرة (ِ) في آخره.
+                </p>
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg mb-8">
+                    <p class="font-bold">مثال:</p>
+                    <p><span class="text-red-600 font-semibold">البيتُ</span> (al-baytu) - The house</p>
+                    <p><span class="text-green-600 font-semibold">في البيتِ</span> (fī al-bayti) - In the house (لاحظ الكسرة تحت التاء)</p>
+                </div>
+
+                <h3 class="text-2xl font-bold mb-4 text-gray-700">أشهر حروف الجر واستخداماتها</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="p-3 font-bold uppercase text-gray-600 border border-gray-300">حرف الجر</th>
+                                <th class="p-3 font-bold uppercase text-gray-600 border border-gray-300">المعنى</th>
+                                <th class="p-3 font-bold uppercase text-gray-600 border border-gray-300">مثال</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-gray-50"><td class="p-3 border border-gray-200 font-semibold">في</td><td class="p-3 border border-gray-200">in, at</td><td class="p-3 border border-gray-200">أنا في البيتِ</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="p-3 border border-gray-200 font-semibold">على</td><td class="p-3 border border-gray-200">on</td><td class="p-3 border border-gray-200">القلم على المكتبِ</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="p-3 border border-gray-200 font-semibold">إلى</td><td class="p-3 border border-gray-200">to</td><td class="p-3 border border-gray-200">أذهب إلى المدرسةِ</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="p-3 border border-gray-200 font-semibold">من</td><td class="p-3 border border-gray-200">from</td><td class="p-3 border border-gray-200">أنا من مصر</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="p-3 border border-gray-200 font-semibold">لـِ</td><td class="p-3 border border-gray-200">for</td><td class="p-3 border border-gray-200">هذا الكتابُ لِأحمدَ</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="p-3 border border-gray-200 font-semibold">بـِ</td><td class="p-3 border border-gray-200">with, by</td><td class="p-3 border border-gray-200">أكتب بالقلمِ</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="p-3 border border-gray-200 font-semibold">عن</td><td class="p-3 border border-gray-200">about</td><td class="p-3 border border-gray-200">أتكلم عن العائلةِ</td></tr>
+                            <tr class="hover:bg-gray-50"><td class="p-3 border border-gray-200 font-semibold">كـَ</td><td class="p-3 border border-gray-200">like, as</td><td class="p-3 border border-gray-200">أنت قويٌّ كالأسدِ</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="practice" class="tab-content hidden">
+                 <div id="activity-selection" class="text-center">
+                    <h2 class="text-3xl font-bold mb-4 text-gray-700">اختر تمريناً</h2>
+                    <p class="text-lg text-gray-500 mb-8">اختر أحد الأنشطة التفاعلية التالية لاختبار معلوماتك.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="activity-card bg-white p-6 rounded-xl shadow-lg cursor-pointer" data-activity="fill-in-blank">
+                            <h3 class="text-xl font-bold text-gray-800">١. املأ الفراغ</h3>
+                            <p class="text-gray-600 mt-2">اختر حرف الجر الصحيح لإكمال الجملة.</p>
+                        </div>
+                        <div class="activity-card bg-white p-6 rounded-xl shadow-lg cursor-pointer" data-activity="translation">
+                             <h3 class="text-xl font-bold text-gray-800">٢. ترجمة</h3>
+                            <p class="text-gray-600 mt-2">ترجم الجمل من الإنجليزية إلى العربية.</p>
+                        </div>
+                        <div class="activity-card bg-white p-6 rounded-xl shadow-lg cursor-pointer" data-activity="matching">
+                             <h3 class="text-xl font-bold text-gray-800">٣. مطابقة</h3>
+                            <p class="text-gray-600 mt-2">طابق بين حرف الجر ومعناه باللغة الإنجليزية.</p>
+                        </div>
+                         <div class="activity-card bg-white p-6 rounded-xl shadow-lg cursor-pointer" data-activity="sentence-building">
+                             <h3 class="text-xl font-bold text-gray-800">٤. بناء الجمل</h3>
+                            <p class="text-gray-600 mt-2">رتب الكلمات لتكوين جملة صحيحة.</p>
+                        </div>
+                        <div class="activity-card bg-white p-6 rounded-xl shadow-lg cursor-pointer" data-activity="analysis">
+                             <h3 class="text-xl font-bold text-gray-800">٥. تحليل</h3>
+                            <p class="text-gray-600 mt-2">حدد حرف الجر والاسم المجرور في الجملة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="activity-container" class="hidden bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <button id="back-to-activities" class="mb-4 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-semibold hover:bg-gray-300 transition-colors">← العودة للتمارين</button>
+                    <div id="question-container"></div>
+                    <div id="feedback" class="mt-4 p-4 rounded-lg text-center font-bold text-lg hidden"></div>
+                    <div class="flex justify-between items-center mt-6">
+                        <div id="progress" class="text-gray-600 font-semibold"></div>
+                        <button id="next-question" class="bg-blue-500 text-white py-2 px-6 rounded-lg font-bold hover:bg-blue-600 transition-colors hidden">التالي</button>
+                    </div>
+                     <div id="results" class="hidden text-center mt-6">
+                        <h3 class="text-2xl font-bold text-gray-800">النتائج</h3>
+                        <p id="score" class="text-4xl font-bold my-4"></p>
+                        <button id="restart-activity" class="bg-green-500 text-white py-2 px-6 rounded-lg font-bold hover:bg-green-600 transition-colors">أعد التمرين</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const activitySelection = document.getElementById('activity-selection');
+            const activityContainer = document.getElementById('activity-container');
+            const activityCards = document.querySelectorAll('.activity-card');
+            const backToActivitiesBtn = document.getElementById('back-to-activities');
+            const questionContainer = document.getElementById('question-container');
+            const feedbackEl = document.getElementById('feedback');
+            const progressEl = document.getElementById('progress');
+            const nextButton = document.getElementById('next-question');
+            const resultsContainer = document.getElementById('results');
+            const scoreEl = document.getElementById('score');
+            const restartButton = document.getElementById('restart-activity');
+
+            let currentActivity = null;
+            let currentQuestionIndex = 0;
+            let score = 0;
+
+            const activitiesData = {
+                'fill-in-blank': {
+                    title: 'املأ الفراغ',
+                    questions: [
+                        { text: 'أذهب ___ الجامعةِ كل يوم.', options: ['إلى', 'على', 'عن', 'في'], answer: 'إلى' },
+                        { text: 'القطة ___ الكرسيِّ.', options: ['من', 'على', 'لـ', 'بـ'], answer: 'على' },
+                        { text: 'أقرأ كتاباً ___ التاريخِ.', options: ['كـ', 'في', 'عن', 'إلى'], answer: 'عن' },
+                        { text: 'هذا الكتاب ___ الطالبِ.', options: ['لـ', 'من', 'على', 'بـ'], answer: 'لـ' },
+                        { text: 'أنا ___ المكتبةِ الآن.', options: ['عن', 'إلى', 'في', 'كـ'], answer: 'في' },
+                    ]
+                },
+                'translation': {
+                    title: 'ترجمة',
+                    questions: [
+                        { text: 'The book is on the table.', answer: 'الكتاب على الطاولة' },
+                        { text: 'I am from America.', answer: 'أنا من أمريكا' },
+                        { text: 'She goes to the market.', answer: 'هي تذهب إلى السوق' },
+                        { text: 'I write with a pencil.', answer: 'أكتب بقلم رصاص' },
+                        { text: 'I talk about my friend.', answer: 'أتكلم عن صديقي' },
+                    ]
+                },
+                'matching': {
+                    title: 'مطابقة',
+                    pairs: { 'إلى': 'to', 'على': 'on', 'عن': 'about', 'في': 'in', 'لـ': 'for', 'من': 'from', 'بـ': 'with', 'كـ': 'as' }
+                },
+                'sentence-building': {
+                    title: 'بناء الجمل',
+                    questions: [
+                        { words: ['الطالب', 'المدرسة', 'ذهب', 'إلى'], answer: 'ذهب الطالب إلى المدرسة' },
+                        { words: ['أخي', 'السيارة', 'في'], answer: 'أخي في السيارة' },
+                        { words: ['أقرأ', 'كتابا', 'عن', 'السفر'], answer: 'أقرأ كتابا عن السفر' },
+                    ]
+                },
+                'analysis': {
+                    title: 'تحليل',
+                    questions: [
+                       { sentence: 'يسكن أخي في مدينةِ القاهرة.', prep: 'في', noun: 'مدينة' },
+                       { sentence: 'تجلس الطائرة على المدرجِ.', prep: 'على', noun: 'المدرج' },
+                       { sentence: 'أرسلت رسالةً إلى صديقتي.', prep: 'إلى', noun: 'صديقتي' },
+                    ]
+                }
+            };
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => {
+                        t.classList.remove('tab-active');
+                        t.classList.add('tab-inactive');
+                    });
+                    tab.classList.add('tab-active');
+                    tab.classList.remove('tab-inactive');
+
+                    tabContents.forEach(content => content.classList.add('hidden'));
+                    document.getElementById(tab.dataset.tab).classList.remove('hidden');
+                });
+            });
+
+            activityCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    currentActivity = card.dataset.activity;
+                    startActivity(currentActivity);
+                });
+            });
+
+            backToActivitiesBtn.addEventListener('click', () => {
+                activityContainer.classList.add('hidden');
+                activitySelection.classList.remove('hidden');
+            });
+
+            nextButton.addEventListener('click', () => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < activitiesData[currentActivity].questions.length) {
+                    displayQuestion();
+                } else {
+                    showResults();
+                }
+            });
+            
+            restartButton.addEventListener('click', () => {
+                 startActivity(currentActivity);
+            });
+
+            function startActivity(activityId) {
+                currentActivity = activityId;
+                currentQuestionIndex = 0;
+                score = 0;
+                activitySelection.classList.add('hidden');
+                activityContainer.classList.remove('hidden');
+                resultsContainer.classList.add('hidden');
+                nextButton.classList.add('hidden');
+                displayQuestion();
+            }
+
+            function displayQuestion() {
+                feedbackEl.classList.add('hidden');
+                nextButton.classList.add('hidden');
+                questionContainer.innerHTML = '';
+
+                if (currentActivity === 'matching') {
+                    displayMatchingActivity();
+                    return;
+                }
+                
+                const activity = activitiesData[currentActivity];
+                const question = activity.questions[currentQuestionIndex];
+                progressEl.textContent = `السؤال ${currentQuestionIndex + 1} من ${activity.questions.length}`;
+                
+                let questionHTML = `<h3 class="text-2xl font-semibold mb-6 text-center">${question.text}</h3>`;
+
+                switch (currentActivity) {
+                    case 'fill-in-blank':
+                        questionHTML += `<div class="flex flex-wrap justify-center gap-4">`;
+                        question.options.forEach(option => {
+                            questionHTML += `<button class="answer-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition-colors" data-answer="${option}">${option}</button>`;
+                        });
+                        questionHTML += `</div>`;
+                        break;
+                    case 'translation':
+                        questionHTML += `<div class="flex flex-col items-center">
+                            <input type="text" id="translation-input" class="text-right p-3 border-2 border-gray-300 rounded-lg w-full max-w-md mb-4 focus:border-blue-500 focus:ring-blue-500" placeholder="اكتب ترجمتك هنا...">
+                            <button id="check-translation" class="bg-green-500 text-white py-2 px-8 rounded-lg font-bold hover:bg-green-600 transition-colors">تحقق</button>
+                        </div>`;
+                        break;
+                    case 'sentence-building':
+                        questionHTML += `<div class="bg-gray-100 p-4 rounded-lg min-h-[60px] mb-4 text-2xl font-semibold text-center" id="sentence-area"></div>`;
+                        questionHTML += `<div class="flex flex-wrap justify-center gap-4" id="word-bank">`;
+                        shuffleArray(question.words).forEach(word => {
+                             questionHTML += `<button class="word-btn bg-indigo-200 hover:bg-indigo-300 text-indigo-800 font-bold py-3 px-6 rounded-lg transition-colors">${word}</button>`;
+                        });
+                        questionHTML += `</div>`;
+                        questionHTML += `<div class="text-center mt-6"><button id="check-sentence" class="bg-green-500 text-white py-2 px-8 rounded-lg font-bold hover:bg-green-600 transition-colors">تحقق</button></div>`;
+                        break;
+                    case 'analysis':
+                        questionHTML += `<div class="text-center space-y-6">
+                            <div>
+                                <p class="font-semibold mb-2">اختر حرف الجر:</p>
+                                <div class="flex flex-wrap justify-center gap-2">
+                                    ${Object.keys(activitiesData.matching.pairs).map(p => `<button class="analysis-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg" data-type="prep" data-answer="${p}">${p}</button>`).join('')}
+                                </div>
+                            </div>
+                             <div>
+                                <p class="font-semibold mb-2">اختر الاسم المجرور:</p>
+                                <div class="flex flex-wrap justify-center gap-2">
+                                    ${question.sentence.replace(/[.,]/g, '').split(' ').map(word => `<button class="analysis-btn bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg" data-type="noun" data-answer="${word.replace('ِ', '')}">${word}</button>`).join('')}
+                                </div>
+                            </div>
+                        </div>`;
+                        break;
+                }
+                questionContainer.innerHTML = questionHTML;
+                addQuestionEventListeners();
+            }
+            
+            function displayMatchingActivity() {
+                const activity = activitiesData.matching;
+                progressEl.textContent = `طابق ${Object.keys(activity.pairs).length} أزواج`;
+                let arabicWords = shuffleArray(Object.keys(activity.pairs));
+                let englishWords = shuffleArray(Object.values(activity.pairs));
+
+                let questionHTML = `<h3 class="text-2xl font-semibold mb-6 text-center">طابق حرف الجر بمعناه</h3>
+                <div class="grid grid-cols-2 gap-4 md:gap-8">
+                    <div id="arabic-col" class="space-y-3 flex flex-col">${arabicWords.map(word => `<button class="match-item p-4 border-2 rounded-lg font-bold text-xl" data-value="${word}">${word}</button>`).join('')}</div>
+                    <div id="english-col" class="space-y-3 flex flex-col">${englishWords.map(word => `<button class="match-item p-4 border-2 rounded-lg font-semibold text-lg" data-value="${word}">${word}</button>`).join('')}</div>
+                </div>`;
+                questionContainer.innerHTML = questionHTML;
+                addMatchingListeners();
+            }
+            
+            let selectedArabic = null;
+            let selectedEnglish = null;
+            let correctMatches = 0;
+
+            function addMatchingListeners() {
+                const arabicItems = document.querySelectorAll('#arabic-col .match-item');
+                const englishItems = document.querySelectorAll('#english-col .match-item');
+                correctMatches = 0;
+
+                arabicItems.forEach(item => item.addEventListener('click', () => {
+                    if (selectedArabic) selectedArabic.classList.remove('match-item-selected');
+                    selectedArabic = item;
+                    selectedArabic.classList.add('match-item-selected');
+                    checkMatch();
+                }));
+
+                englishItems.forEach(item => item.addEventListener('click', () => {
+                    if (selectedEnglish) selectedEnglish.classList.remove('match-item-selected');
+                    selectedEnglish = item;
+                    selectedEnglish.classList.add('match-item-selected');
+                    checkMatch();
+                }));
+            }
+            
+            function checkMatch() {
+                if (!selectedArabic || !selectedEnglish) return;
+
+                const arabicValue = selectedArabic.dataset.value;
+                const englishValue = selectedEnglish.dataset.value;
+                
+                if (activitiesData.matching.pairs[arabicValue] === englishValue) {
+                    selectedArabic.classList.add('match-item-correct');
+                    selectedEnglish.classList.add('match-item-correct');
+                    correctMatches++;
+                    score++;
+                    if (correctMatches === Object.keys(activitiesData.matching.pairs).length) {
+                        showFeedback(true, 'أحسنت! لقد أكملت المطابقة بنجاح.');
+                        showResults();
+                    }
+                } else {
+                    selectedArabic.classList.add('match-item-incorrect');
+                    selectedEnglish.classList.add('match-item-incorrect');
+                    setTimeout(() => {
+                        selectedArabic.classList.remove('match-item-incorrect');
+                        selectedEnglish.classList.remove('match-item-incorrect');
+                    }, 500);
+                }
+                
+                selectedArabic.classList.remove('match-item-selected');
+                selectedEnglish.classList.remove('match-item-selected');
+                selectedArabic = null;
+                selectedEnglish = null;
+            }
+
+
+            function addQuestionEventListeners() {
+                if (currentActivity === 'fill-in-blank') {
+                    document.querySelectorAll('.answer-btn').forEach(button => {
+                        button.addEventListener('click', e => checkAnswer(e.target.dataset.answer));
+                    });
+                } else if (currentActivity === 'translation') {
+                    document.getElementById('check-translation').addEventListener('click', () => {
+                        const userAnswer = document.getElementById('translation-input').value;
+                        checkAnswer(userAnswer);
+                    });
+                } else if (currentActivity === 'sentence-building') {
+                    const wordBank = document.getElementById('word-bank');
+                    const sentenceArea = document.getElementById('sentence-area');
+                    wordBank.addEventListener('click', e => {
+                        if (e.target.classList.contains('word-btn')) {
+                            sentenceArea.textContent += e.target.textContent + ' ';
+                            e.target.disabled = true;
+                            e.target.style.opacity = '0.5';
+                        }
+                    });
+                    document.getElementById('check-sentence').addEventListener('click', () => {
+                        checkAnswer(sentenceArea.textContent.trim());
+                    });
+                } else if (currentActivity === 'analysis') {
+                    let prepAnswer = null;
+                    let nounAnswer = null;
+                    document.querySelectorAll('.analysis-btn').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            const type = btn.dataset.type;
+                            const answer = btn.dataset.answer;
+                            
+                            // Reset styles for the group
+                            document.querySelectorAll(`.analysis-btn[data-type="${type}"]`).forEach(b => b.classList.remove('match-item-selected'));
+                            btn.classList.add('match-item-selected');
+
+                            if (type === 'prep') prepAnswer = answer;
+                            if (type === 'noun') nounAnswer = answer;
+
+                            if (prepAnswer && nounAnswer) {
+                                checkAnswer({prep: prepAnswer, noun: nounAnswer});
+                                prepAnswer = null; // Reset for next attempt if wrong
+                                nounAnswer = null;
+                            }
+                        });
+                    });
+                }
+            }
+
+            function checkAnswer(userAnswer) {
+                const activity = activitiesData[currentActivity];
+                const question = activity.questions[currentQuestionIndex];
+                let isCorrect = false;
+
+                if (currentActivity === 'fill-in-blank') {
+                    isCorrect = userAnswer === question.answer;
+                } else if (currentActivity === 'translation') {
+                    // Simple check, removes final vowel marks for flexibility
+                    const correctAnswer = question.answer.replace(/[َُِ]/g, '');
+                    const simplifiedUserAnswer = userAnswer.replace(/[َُِ]/g, '');
+                    isCorrect = simplifiedUserAnswer === correctAnswer;
+                } else if (currentActivity === 'sentence-building') {
+                     isCorrect = userAnswer === question.answer;
+                } else if (currentActivity === 'analysis') {
+                     isCorrect = userAnswer.prep === question.prep && userAnswer.noun === question.noun;
+                }
+
+                if (isCorrect) {
+                    score++;
+                    showFeedback(true, 'إجابة صحيحة!');
+                } else {
+                    showFeedback(false, `إجابة خاطئة. الصحيح هو: ${currentActivity === 'analysis' ? `${question.prep}, ${question.noun}` : question.answer}`);
+                }
+                
+                document.querySelectorAll('.answer-btn, .word-btn, .analysis-btn, #check-translation, #check-sentence').forEach(b => b.disabled = true);
+                nextButton.classList.remove('hidden');
+            }
+
+            function showFeedback(isCorrect, message) {
+                feedbackEl.textContent = message;
+                feedbackEl.className = 'mt-4 p-4 rounded-lg text-center font-bold text-lg';
+                feedbackEl.classList.add(isCorrect ? 'feedback-correct' : 'feedback-incorrect');
+                feedbackEl.classList.remove('hidden');
+            }
+            
+            function showResults() {
+                questionContainer.innerHTML = '';
+                feedbackEl.classList.add('hidden');
+                nextButton.classList.add('hidden');
+                progressEl.textContent = '';
+                resultsContainer.classList.remove('hidden');
+                
+                let totalQuestions = currentActivity === 'matching' ? Object.keys(activitiesData.matching.pairs).length : activitiesData[currentActivity].questions.length;
+                scoreEl.textContent = `${score} / ${totalQuestions}`;
+                scoreEl.style.color = (score / totalQuestions) >= 0.7 ? '#48BB78' : '#F56565';
+            }
+
+            function shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+        });
+    </script>
+</body>
+</html>
