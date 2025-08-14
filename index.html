@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الصفحة الرئيسية: درس اللغة العربية</title>
+    <!-- Chosen Palette: Warm and Professional -->
+    <!-- Application Structure Plan: A single, vertical scrollable page with logical sections. The structure includes a prominent header, a welcoming "About the Class" section, a "Modules & Resources" section displaying clickable cards for various lessons (like the prepositions app), and a contact section. The design prioritizes clear information hierarchy and navigability for students to quickly find course materials. -->
+    <!-- Visualization & Content Choices: Report Info: Class information & resources -> Goal: Inform and organize -> Presentation: Styled text blocks and a grid of interactive cards. Interaction: Clicking cards to navigate to different resources. Justification: This structure is highly scannable and user-friendly, allowing students to access key materials without overwhelming them. -> Library/Method: Vanilla HTML, Tailwind CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans Arabic', sans-serif; background-color: #FDFCF9; }
+        .hover-card { transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .hover-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-gray-700 text-white py-12 mb-8">
+        <div class="container mx-auto text-center px-4">
+            <h1 class="text-5xl md:text-6xl font-bold">مرحباً بكم في صف اللغة العربية</h1>
+            <p class="mt-4 text-xl md:text-2xl font-light">بوابة التعلم الشاملة لكل طالب</p>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <section class="mb-12 bg-white p-6 md:p-8 rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-gray-700 mb-4 border-b-2 border-gray-200 pb-2">عن الصف</h2>
+            <p class="text-lg leading-relaxed">
+                هذا الموقع هو مصدركم الرئيسي لكل ما يتعلق بصف اللغة العربية. هنا ستجدون الدروس، والتمارين التفاعلية، والمواد الإضافية التي ستساعدكم في رحلتكم لتعلم هذه اللغة الجميلة. تم تصميم جميع المواد لتكون سهلة الفهم والاستخدام، مع التركيز على الممارسة الفعالة.
+            </p>
+        </section>
+
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-700 mb-6 text-center">الوحدات والموارد</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <a href="#" class="hover-card block bg-white p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                    <div class="text-5xl mb-4">📚</div>
+                    <h3 class="text-xl font-bold text-gray-800">مقدمة في الحروف</h3>
+                    <p class="text-gray-600 mt-2">تعلم الأبجدية والنطق الصحيح.</p>
+                </a>
+                <a href="#" class="hover-card block bg-white p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                    <div class="text-5xl mb-4">💬</div>
+                    <h3 class="text-xl font-bold text-gray-800">جمل المحادثة الأساسية</h3>
+                    <p class="text-gray-600 mt-2">تكوين جمل بسيطة للتواصل اليومي.</p>
+                </a>
+                <a href="#" class="hover-card block bg-white p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                    <div class="text-5xl mb-4">🔍</div>
+                    <h3 class="text-xl font-bold text-gray-800">التمارين التفاعلية</h3>
+                    <p class="text-gray-600 mt-2">تدرب على القواعد اللغوية والمفردات.</p>
+                </a>
+                <a href="#" class="hover-card block bg-white p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                    <div class="text-5xl mb-4">🗣️</div>
+                    <h3 class="text-xl font-bold text-gray-800">تطبيق حروف الجر</h3>
+                    <p class="text-gray-600 mt-2">دليل شامل وتمارين لحروف الجر.</p>
+                </a>
+                <a href="#" class="hover-card block bg-white p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                    <div class="text-5xl mb-4">📖</div>
+                    <h3 class="text-xl font-bold text-gray-800">القصص القصيرة</h3>
+                    <p class="text-gray-600 mt-2">طور مهاراتك في القراءة والاستيعاب.</p>
+                </a>
+                <a href="#" class="hover-card block bg-white p-6 rounded-xl shadow-lg text-center cursor-pointer">
+                    <div class="text-5xl mb-4">🔗</div>
+                    <h3 class="text-xl font-bold text-gray-800">روابط خارجية</h3>
+                    <p class="text-gray-600 mt-2">مصادر مفيدة لتعلم اللغة العربية.</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-700 text-white py-8 mt-12">
+        <div class="container mx-auto text-center px-4">
+            <h3 class="text-2xl font-bold mb-2">تواصل معنا</h3>
+            <p class="text-lg">إذا كان لديك أي أسئلة، لا تتردد في الاتصال بنا.</p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <a href="mailto:example@email.com" class="text-white hover:text-blue-300">
+                    <span class="text-lg">📧</span>
+                </a>
+                <a href="#" class="text-white hover:text-blue-300">
+                    <span class="text-lg">🔗</span>
+                </a>
+            </div>
+            <p class="mt-4 text-sm">&copy; 2024 صف اللغة العربية. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
