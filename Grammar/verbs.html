@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arabic Verbs: The Engine of the Language</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for Arabic text display and font */
+        @import url('https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap');
+        
+        .arabic-text {
+            font-family: 'Almarai', sans-serif;
+            direction: rtl;
+            text-align: right;
+        }
+        
+        /* Ensures the container respects LTR for layout but uses RTL for embedded text */
+        .content-card {
+            background-color: #f8fcfb; /* Very light, clean background */
+            border-left: 5px solid #005f73; /* A deep cyan accent color */
+        }
+
+        .tab-button.active {
+            background-color: #005f73;
+            color: white;
+            border-bottom-width: 4px;
+            border-color: #e9d8a6; /* Gold accent */
+        }
+        
+        .level-header {
+            color: #005f73;
+            border-bottom: 2px dashed #005f7330;
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 640px) {
+            .tab-button {
+                font-size: 0.875rem; /* text-sm */
+                padding: 0.5rem 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen p-4 sm:p-8 font-sans">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-xl p-4 sm:p-8">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-[#005f73] mb-2">
+                الأفعال العربية
+            </h1>
+            <h2 class="text-xl sm:text-2xl text-gray-700">
+                Arabic Verbs: A Study Guide by Level
+            </h2>
+            <p class="text-gray-500 mt-2">Essential grammar for non-native speakers.</p>
+        </header>
+
+        <!-- Tabs Navigation -->
+        <nav class="flex justify-center border-b-2 border-gray-200 mb-6 sticky top-0 bg-white pt-2 z-10">
+            <button class="tab-button py-3 px-4 sm:px-8 text-lg font-semibold text-gray-600 transition duration-300 rounded-t-lg hover:bg-gray-50 active" onclick="showLevel('novice')">
+                Novice (مبتدئ)
+            </button>
+            <button class="tab-button py-3 px-4 sm:px-8 text-lg font-semibold text-gray-600 transition duration-300 rounded-t-lg hover:bg-gray-50" onclick="showLevel('intermediate')">
+                Intermediate (متوسط)
+            </button>
+            <button class="tab-button py-3 px-4 sm:px-8 text-lg font-semibold text-gray-600 transition duration-300 rounded-t-lg hover:bg-gray-50" onclick="showLevel('advanced')">
+                Advanced (متقدم)
+            </button>
+        </nav>
+
+        <!-- Content Sections -->
+
+        <!-- Novice Level Content -->
+        <div id="novice" class="level-content">
+            <h3 class="level-header text-3xl font-bold mb-4 pb-2">Novice Level: The Basics of the Root</h3>
+            <div class="space-y-6">
+                
+                <div class="content-card p-4 rounded-lg shadow-sm">
+                    <h4 class="text-2xl font-semibold mb-2 text-[#e9d8a6] bg-[#005f73] p-2 rounded-t-md arabic-text">الجذر الثلاثي (The Three-Letter Root)</h4>
+                    <p class="mb-3 text-gray-700">All Arabic verbs are built on a root, usually three letters (e.g., K-T-B). This root carries the core meaning.</p>
+                    <div class="bg-gray-50 p-3 rounded-md arabic-text text-xl border border-gray-200">
+                        <strong>ك-ت-ب</strong> (K-T-B) &mdash; Core meaning related to <strong>Writing</strong>.
+                    </div>
+                </div>
+
+                <div class="content-card p-4 rounded-lg shadow-sm">
+                    <h4 class="text-2xl font-semibold mb-2 text-[#e9d8a6] bg-[#005f73] p-2 rounded-t-md arabic-text">الأزمنة الثلاثة (The Three Tenses)</h4>
+                    <ul class="list-disc ml-6 text-lg text-gray-700 space-y-3">
+                        <li>
+                            <strong>الماضي (Al-Māḍī - Past Tense):</strong> What happened. Formed by adding suffixes to the root.
+                            <span class="arabic-text font-bold text-2xl block mt-1">
+                                جَلَسَ (Jalasa) - He sat.
+                            </span>
+                        </li>
+                        <li>
+                            <strong>المضارع (Al-Muḍāri’ - Present Tense):</strong> What is happening/will happen. Formed by adding prefixes and suffixes.
+                            <span class="arabic-text font-bold text-2xl block mt-1">
+                                يَجْلِسُ (Yajlisu) - He sits/is sitting.
+                            </span>
+                        </li>
+                        <li>
+                            <strong>الأمر (Al-Amr - Command Tense):</strong> An instruction.
+                            <span class="arabic-text font-bold text-2xl block mt-1">
+                                اِجْلِسْ (Ijliss) - Sit! (m. singular)
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="content-card p-4 rounded-lg shadow-sm">
+                    <h4 class="text-2xl font-semibold mb-2 text-[#e9d8a6] bg-[#005f73] p-2 rounded-t-md arabic-text">الوزن الأول (Form I - The Base Form)</h4>
+                    <p class="text-gray-700">Most common verbs fall into Form I. You must memorize the middle vowel sound (e.g., *kataba* or *daraba*).</p>
+                    <table class="w-full mt-3 border-collapse text-center arabic-text text-xl">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="p-2 border">Root</th>
+                                <th class="p-2 border">Past Tense (هو)</th>
+                                <th class="p-2 border">Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="p-2 border">ف-ع-ل</td><td class="p-2 border">فَعَلَ</td><td class="p-2 border">To do</td></tr>
+                            <tr class="bg-gray-50"><td class="p-2 border">د-ر-س</td><td class="p-2 border">دَرَسَ</td><td class="p-2 border">To study</td></tr>
+                            <tr><td class="p-2 border">أ-ك-ل</td><td class="p-2 border">أَكَلَ</td><td class="p-2 border">To eat</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Intermediate Level Content -->
+        <div id="intermediate" class="level-content hidden">
+            <h3 class="level-header text-3xl font-bold mb-4 pb-2">Intermediate Level: The Derived Forms (الأوزان)</h3>
+            <div class="space-y-6">
+                
+                <div class="content-card p-4 rounded-lg shadow-sm">
+                    <h4 class="text-2xl font-semibold mb-2 text-[#e9d8a6] bg-[#005f73] p-2 rounded-t-md arabic-text">المزيد (Derived Forms II, III, IV)</h4>
+                    <p class="mb-3 text-gray-700">Forms II, III, and IV are the most common derived forms. They often change the meaning dramatically (causative, intensive, or participatory).</p>
+                    <table class="w-full mt-3 border-collapse text-center arabic-text text-xl">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="p-2 border">Form</th>
+                                <th class="p-2 border">Pattern (هو)</th>
+                                <th class="p-2 border">Example (علم)</th>
+                                <th class="p-2 border">Meaning</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="p-2 border">II</td><td class="p-2 border">فَعَّلَ</td><td class="p-2 border">عَلَّمَ</td><td class="p-2 border">To teach (intensive)</td></tr>
+                            <tr class="bg-gray-50"><td class="p-2 border">III</td><td class="p-2 border">فَاعَلَ</td><td class="p-2 border">عَالَجَ</td><td class="p-2 border">To treat (participatory)</td></tr>
+                            <tr><td class="p-2 border">IV</td><td class="p-2 border">أَفْعَلَ</td><td class="p-2 border">أَعْلَنَ</td><td class="p-2 border">To announce (causative)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="content-card p-4 rounded-lg shadow-sm">
+                    <h4 class="text-2xl font-semibold mb-2 text-[#e9d8a6] bg-[#005f73] p-2 rounded-t-md arabic-text">الأفعال المعتلّة (Weak Verbs)</h4>
+                    <p class="mb-3 text-gray-700">Verbs containing one of the weak letters (ا, و, ي - *alif, wāw, yā’*). Their conjugation is irregular.</p>
+                    <ul class="list-disc ml-6 text-lg text-gray-700 space-y-3">
+                        <li>
+                            <strong>Assimilated (مثال):</strong> Weak letter is the 1st root letter (e.g., وَجَدَ - *wajada* - To find). The *wāw* often disappears in the present tense (يَجِدُ - *yajidu*).
+                        </li>
+                        <li>
+                            <strong>Hollow (أجوف):</strong> Weak letter is the 2nd root letter (e.g., قَالَ - *qāla* - To say). The weak letter often changes or drops in conjugation (قُلْتُ - *qultu* - I said).
+                        </li>
+                        <li>
+                            <strong>Defective (ناقص):</strong> Weak letter is the 3rd root letter (e.g., رَمَى - *ramā* - To throw). The weak letter changes to *alif* or *yā’* depending on the conjugation.
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="content-card p-4 rounded-lg shadow-sm">
+                    <h4 class="text-2xl font-semibold mb-2 text-[#e9d8a6] bg-[#005f73] p-2 rounded-t-md arabic-text">الاسم الفاعل والمفعول (Active and Passive Participles)</h4>
+                    <p class="text-gray-700">These are verb-based nouns and adjectives. For derived forms (II-X), they follow the pattern: *mu-* + root + vowel change.</p>
+                    <div class="bg-gray-50 p-3 rounded-md arabic-text text-xl border border-gray-200">
+                        <p><strong>عَلَّمَ</strong> (Form II: Taught) &rarr; <strong>مُعَلِّم</strong> (Mu'allim - Teacher/Active Participle)</p>
+                        <p><strong>كَتَبَ</strong> (Form I: Wrote) &rarr; <strong>كَاتِب</strong> (Kātib - Writer/Active Participle)</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Advanced Level Content -->
+        <div id="advanced" class="level-content hidden">
+            <h3 class="level-header text-3xl font-bold mb-4 pb-2">Advanced Level: Full Paradigm & Advanced Irregulars</h3>
+            <div class="space-y-6">
+
+                <div class="content-card p-4 rounded-lg shadow-sm">
+                    <h4 class="text-2xl font-semibold mb-2 text-[#e9d8a6] bg-[#005f73] p-2 rounded-t-md arabic-text">بقية الأوزان (Remaining Forms V-X)</h4>
+                    <p class="mb-3 text-gray-700">These forms are often reflexive, passive, or indicate seeking/requesting.</p>
+                    <table class="w-full mt-3 border-collapse text-center arabic-text text-xl">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="p-2 border">Form</th>
+                                <th class="p-2 border">Pattern (هو)</th>
+                                <th class="p-2 border">Meaning Hint</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="p-2 border">V</td><td class="p-2 border">تَفَعَّلَ</td><td class="p-2 border">Reflexive of II (e.g., to learn)</td></tr>
+                            <tr class="bg-gray-50"><td class="p-2 border">VI</td><td class="p-2 border">تَفَاعَلَ</td><td class="p-2 border">Reciprocal of III (e.g., to correspond)</td></tr>
+                            <tr><td class="p-2 border">VII</td><td class="p-2 border">اِنْفَعَلَ</td><td class="p-2 border">Passive/Reflexive (e.g., to break)</td></tr>
+                            <tr class="bg-gray-50"><td class="p-2 border">VIII</td><td class="p-2 border">اِفْتَعَلَ</td><td class="p-2 border">Active/Reflexive (e.g., to gather)</td></tr>
+                            <tr><td class="p-2 border">X</td><td class="p-2 border">اِسْتَفْعَلَ</td><td class="p-2 border">Seeking/Requesting (e.g., to use/seek use)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="content-card p-4 rounded-lg shadow-sm">
+                    <h4 class="text-2xl font-semibold mb-2 text-[#e9d8a6] bg-[#005f73] p-2 rounded-t-md arabic-text">المضعف (Geminate/Doubled Verbs)</h4>
+                    <p class="mb-3 text-gray-700">Verbs where the 2nd and 3rd root letters are identical (e.g., M-D-D).</p>
+                    <div class="bg-gray-50 p-3 rounded-md arabic-text text-xl border border-gray-200">
+                        <p><strong>مَدَّ</strong> (Madda - He extended). In the past tense, the geminate un-doubles when followed by a consonant suffix:</p>
+                        <p><strong>مَدَدْتُ</strong> (Madadtu - I extended).</p>
+                    </div>
+                </div>
+
+                <div class="content-card p-4 rounded-lg shadow-sm">
+                    <h4 class="text-2xl font-semibold mb-2 text-[#e9d8a6] bg-[#005f73] p-2 rounded-t-md arabic-text">الأفعال الرباعية (Quadriliteral Verbs)</h4>
+                    <p class="mb-3 text-gray-700">Verbs based on a four-letter root (Form I is the only one, with a derived Form II).</p>
+                    <div class="bg-gray-50 p-3 rounded-md arabic-text text-xl border border-gray-200">
+                        <p>Root: <strong>د-ح-ر-ج</strong> &rarr; Form I: <strong>دَحْرَجَ</strong> (Daḥraja - To roll/trundle)</p>
+                        <p>Derived Form: <strong>تَدَحْرَجَ</strong> (Tadaḥraja - To roll *itself* - reflexive)</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /**
+         * Function to switch between the Novice, Intermediate, and Advanced content tabs.
+         * @param {string} level - The ID of the content block to show ('novice', 'intermediate', 'advanced').
+         */
+        function showLevel(level) {
+            // Get all content sections and buttons
+            const contents = document.querySelectorAll('.level-content');
+            const buttons = document.querySelectorAll('.tab-button');
+
+            // Hide all contents and remove 'active' class from all buttons
+            contents.forEach(content => {
+                content.classList.add('hidden');
+            });
+            buttons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show the selected content and set the corresponding button as active
+            const targetContent = document.getElementById(level);
+            const targetButton = document.querySelector(`.tab-button[onclick*="'${level}'"]`);
+
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+            }
+            if (targetButton) {
+                targetButton.classList.add('active');
+            }
+        }
+
+        // Initialize by showing the novice level content on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            showLevel('novice');
+        });
+    </script>
+</body>
+</html>
